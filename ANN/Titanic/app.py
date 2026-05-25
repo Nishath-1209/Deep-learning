@@ -1,9 +1,9 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import tensorflow as tf
+import keras
+from keras.models import load_model
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import MinMaxScaler
 
 # =========================
 # PAGE CONFIG
@@ -18,7 +18,7 @@ st.set_page_config(
 # LOAD MODEL
 # =========================
 
-model = tf.keras.models.load_model(
+model = load_model(
     "model/titanic_ann_model.h5"
 )
 
@@ -31,29 +31,6 @@ st.title("🚢 Titanic Survival Prediction System")
 st.subheader(
     "Deep Learning Based Passenger Survival Prediction"
 )
-
-st.markdown("---")
-
-# =========================
-# PROJECT DESCRIPTION
-# =========================
-
-st.markdown("""
-## 📘 Project Description
-
-This application predicts whether a passenger would survive during the Titanic disaster using:
-
-- Artificial Neural Networks (ANN)
-- TensorFlow/Keras
-- Streamlit Deployment
-
-The model uses:
-- Passenger Class
-- Age
-- Fare
-
-to predict survival probability.
-""")
 
 st.markdown("---")
 
@@ -90,13 +67,8 @@ with col3:
 # PREPROCESSING
 # =========================
 
-# Manual normalization ranges
-# Pclass: 1-3
-# Age: 1-80
-# Fare: 0-512
-
-pclass_norm = (pclass - 1) / (3 - 1)
-age_norm = (age - 1) / (80 - 1)
+pclass_norm = (pclass - 1) / 2
+age_norm = (age - 1) / 79
 fare_norm = fare / 512
 
 input_data = np.array([
@@ -135,10 +107,6 @@ if st.button("Predict Survival"):
             "Survival Probability",
             f"{probability*100:.2f}%"
         )
-
-    # =========================
-    # VISUALIZATION
-    # =========================
 
     st.subheader("📈 Probability Visualization")
 
