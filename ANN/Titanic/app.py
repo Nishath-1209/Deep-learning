@@ -109,7 +109,7 @@ input_data = np.array([
 
 if st.button("Predict Survival"):
 
-    prediction = model.predict(input_data)
+    prediction = model.predict(input_data, verbose=0)
 
     probability = prediction[0][0]
 
